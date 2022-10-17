@@ -1,10 +1,19 @@
 import RPi.GPIO as GPIO
+import smbus
+
 import time
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(21,GPIO.OUT)
-print "LED on"
-GPIO.output(21,GPIO.HIGH)
-time.sleep(10)
-print "LED off"
-GPIO.output(21,GPIO.LOW)
+
+address = 0x48
+
+bus = smbus.SMBus(1)
+
+
+while True:
+
+    bus.write_byte(address,A0)
+
+    value = bus.read_byte(address)
+
+    print(value)
+
+    time.sleep(0.1)
