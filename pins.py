@@ -6,14 +6,16 @@ import time
 address = 0x48
 
 bus = smbus.SMBus(1)
-
+A0 = 0x43
 
 while True:
+    try:
+        bus.write_byte(address,A0)
 
-    bus.write_byte(address,A0)
+        value = bus.read_byte(address)
 
-    value = bus.read_byte(address)
+        print(value)
 
-    print(value)
-
-    time.sleep(0.1)
+        time.sleep(0.1)
+    except:
+        print("Need to interface")
