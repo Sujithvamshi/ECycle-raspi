@@ -6,33 +6,33 @@
 
 from __future__ import print_function
 
-from functions import *
-from direction_functions import *
+import argparse
+import io
+import logging
+import math
+import socketserver
+import sys
+import time
+from http import server
+from threading import Condition
 
-from dronekit import connect, VehicleMode, Command, LocationGlobal, LocationGlobalRelative
+import picamera
+#import Adafruit_MCP4725
+import RPi.GPIO as GPIO
+#import Jetson.GPIO as GPIO
+import smbus
+from dronekit import (Command, LocationGlobal, LocationGlobalRelative,
+                      VehicleMode, connect)
 from pymavlink import mavutil
-import time, sys, argparse, math
+
+from direction_functions import *
+from functions import *
 
 #from picamera.array import PiRGBArray
 #from picamera import PiCamera
 #import cv2
 #import numpy as np
 #import math
-
-import io
-import picamera
-
-import logging
-import socketserver
-from threading import Condition
-from http import server
-
-import argparse  
-#import Adafruit_MCP4725
-import RPi.GPIO as GPIO
-#import Jetson.GPIO as GPIO
-import smbus
-
 
 # https://thedatafrog.com/en/articles/show-data-google-map-python/
 
@@ -127,20 +127,20 @@ def setup():
 def rotate_left():
     global dc
     if read_angle() > (steering_center - steering_limits):
-	    print("turn left")
-	    GPIO.output(steer_dir_pin, left)
-	    #dc=10
-	    pwm.ChangeDutyCycle(dc)
-	    print(dc)
-	    time.sleep(0.05)
-	    stop_steering()
+        print("turn left")
+        GPIO.output(steer_dir_pin, left)
+        #dc=10
+        pwm.ChangeDutyCycle(dc)
+        print(dc)
+        time.sleep(0.05)
+        stop_steering()
 	   # pwm.ChangeDutyCycle(0)
 	#    time.sleep(1)
     if read_angle() < (steering_center - steering_limits):
-	    print("dont turn left")
-	    GPIO.output(steer_dir_pin, left)
+        print("dont turn left")
+        GPIO.output(steer_dir_pin, left)
 	    #dc=10
-	    pwm.ChangeDutyCycle(0)
+        pwm.ChangeDutyCycle(0)
 	    #print(dc)
 	   # time.sleep(0.1)
 	   # pwm.ChangeDutyCycle(0)
@@ -149,21 +149,21 @@ def rotate_left():
 def rotate_right():
     global dc
     if read_angle() < (steering_center+steering_limits):
-	    print("turn right")
-	    GPIO.output(steer_dir_pin, right)
-	    print(dc)
+        print("turn right")
+        GPIO.output(steer_dir_pin, right)
+        print(dc)
 	    #write1(0)
 	   # dc=10
-	    pwm.ChangeDutyCycle(dc)
-	    time.sleep(0.05)
-	    stop_steering()
+        pwm.ChangeDutyCycle(dc)
+        time.sleep(0.05)
+        stop_steering()
 	#    pwm.ChangeDutyCycle(0)
 	#    time.sleep(1)
     if read_angle() > (steering_center + steering_limits):
-	    print("dont turn right")
-	    GPIO.output(steer_dir_pin, left)
+        print("dont turn right")
+        GPIO.output(steer_dir_pin, left)
 	    #dc=10
-	    pwm.ChangeDutyCycle(0)
+        pwm.ChangeDutyCycle(0)
 	    #print(dc)
 	   # time.sleep(0.1)
 	   # pwm.ChangeDutyCycle(0)

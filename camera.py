@@ -1,6 +1,9 @@
-import math, numpy as np
-from dronekit import connect
+import math
 from time import sleep
+
+import numpy as np
+from dronekit import connect
+
 
 def get_bearing(lat1,lon1,lat2,lon2):
     dLon = lon2 - lon1;

@@ -1,11 +1,14 @@
 from __future__ import print_function
 
-from dronekit import connect, VehicleMode, Command, LocationGlobal, LocationGlobalRelative
-from pymavlink import mavutil
-import time, sys, argparse, math
+import argparse
+import math
+import sys
+import time
 
 import smbus
-
+from dronekit import (Command, LocationGlobal, LocationGlobalRelative,
+                      VehicleMode, connect)
+from pymavlink import mavutil
 
 # https://thedatafrog.com/en/articles/show-data-google-map-python/
 
@@ -17,8 +20,9 @@ bokeh_width, bokeh_height = 1000,500
 import os
 
 from bokeh.io import show
-from bokeh.plotting import gmap
 from bokeh.models import GMapOptions
+from bokeh.plotting import gmap
+
 maps_api_key = "AIzaSyA9-vAo4DNA9qhJhM230J8w74nG-igeFsk"
 
 #lat, lon = 17.602627, 78.1266067

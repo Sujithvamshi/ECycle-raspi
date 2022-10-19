@@ -1,24 +1,28 @@
 from __future__ import print_function
-from dronekit import connect, VehicleMode, Command, LocationGlobal, LocationGlobalRelative
-from pymavlink import mavutil
-from googlemaps import Client
 
+import argparse
+import json
+import math
+import pprint
+import sys
+import time
+import urllib
+import urllib.request
 
-import time, sys, argparse, math
-import argparse  
 import RPi.GPIO as GPIO
 import smbus
-
-import urllib, json
-import urllib.request
-import pprint
+from dronekit import (Command, LocationGlobal, LocationGlobalRelative,
+                      VehicleMode, connect)
+from googlemaps import Client
+from pymavlink import mavutil
 
 bokeh_width, bokeh_height = 1000,500
 import os
 
 from bokeh.io import show
-from bokeh.plotting import gmap
 from bokeh.models import GMapOptions
+from bokeh.plotting import gmap
+
 maps_api_key = "AIzaSyA9-vAo4DNA9qhJhM230J8w74nG-igeFsk"
 
 def get_destination():
