@@ -12,6 +12,5 @@ update_url = 'https://ecycle.herokuapp.com/api/updateorder'
 while True:
     lat,lon = vehicle.location.global_frame.lat,vehicle.location.global_frame.lon
     print(lat,lon)
-    data['cycle'] = [lat,lon]
-    response = requests.post(update_url,data)
     time.sleep(2)
+    
