@@ -1,14 +1,13 @@
 import RPi.GPIO as GPIO
 import time
 from smbus import SMBus
-import threading
 
 dc = 1
 steer_pwm_pin = 33
 steer_dir_pin = 35
 left = GPIO.LOW
 right = GPIO.HIGH
-
+currentAngle = 0
 def setup():
     global pwm
     GPIO.setmode(GPIO.BOARD)
@@ -21,23 +20,33 @@ def setup():
     GPIO.output(steer_dir_pin, GPIO.LOW)
 setup()
 
-def rotate(direction):
+def rotate(direction,turns):
     global dc
     global currentAngle
     if direction == "left":
-        print("turn left")
-        GPIO.output(steer_dir_pin, left)
-        pwm.ChangeDutyCycle(dc)
-        time.sleep(0.08)
+        for _ in range(turns):
+            GPIO.output(steer_dir_pin, left)
+            pwm.ChangeDutyCycle(dc)
+            time.sleep(0.08)
+        print("turned left : {turns} times")
     else:
-        print("turn right")
-        GPIO.output(steer_dir_pin, right)
-        pwm.ChangeDutyCycle(dc)
-        time.sleep(0.1)
+        for _ in range(turns):
+            GPIO.output(steer_dir_pin, right)
+            pwm.ChangeDutyCycle(dc)
+            time.sleep(0.1)
+        print("turned left : {turns} times")
     stop_steering()
-def steer_straight():
+def steer_straight(turns = 0):
+    global currentAngle
+    if turns != 0 :
+        currentAngle = turns
     if currentAngle > 0:
-        rotate("left")
+        rotate("left",currentAngle)
+        currentAngle = 0
+    else:
+        rotate("right",currentAngle)
+        currentAngle = 0
+    print("steering Straight")
 def stop_steering():
     print("stop steering")
     pwm.ChangeDutyCycle(0)
