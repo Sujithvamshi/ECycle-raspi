@@ -23,43 +23,47 @@ setup()
 def rotate(direction,turns):
     global dc
     global currentAngle
-    if direction == "left":
+    currentAngle = currentAngle+turns if direction=="r" else currentAngle-turns
+    if direction == "l":
         for _ in range(turns):
+            time.sleep(0.5)
             GPIO.output(steer_dir_pin, left)
             pwm.ChangeDutyCycle(dc)
-            time.sleep(0.08)
-        print("turned left : {turns} times")
+            time.sleep(0.1)
+            pwm.ChangeDutyCycle(0)
+        print(f"turned left : {turns} times")
     else:
         for _ in range(turns):
+            time.sleep(0.7)
             GPIO.output(steer_dir_pin, right)
             pwm.ChangeDutyCycle(dc)
             time.sleep(0.1)
-        print("turned left : {turns} times")
-    stop_steering()
+            pwm.ChangeDutyCycle(0)
+        print(f"turned right : {turns} times")
 def steer_straight(turns = 0):
     global currentAngle
     if turns != 0 :
         currentAngle = turns
     if currentAngle > 0:
-        rotate("left",currentAngle)
+        rotate("l",currentAngle)
         currentAngle = 0
     else:
-        rotate("right",currentAngle)
+        rotate("r",currentAngle)
         currentAngle = 0
     print("steering Straight")
-def stop_steering():
-    print("stop steering")
-    pwm.ChangeDutyCycle(0)
 def set_speed(speed):
     bus.write_byte_data(address,0x40,speed)
 def read_speed():
     return bus.read_byte(address)
 bus = SMBus(1)
 address = 0x48
-speed = 100
-rotate("left")
+speed = 110
+rotate("l",3)
 #set_speed(speed)
-#print(read_speed())
-#time.sleep(2)
-#set_speed(0)
+#rotate("l",3)
+#time.sleep(3)
+#rotate("r",5)
+#rotate("l",5)
+#print(currentAngle)
+set_speed(0)
 GPIO.cleanup()
